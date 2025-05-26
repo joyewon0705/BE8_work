@@ -38,10 +38,10 @@ public class App {
                 delete(parseId(command));
             } else if (command.startsWith("수정?id=")) {
                 modify(parseId(command));
+            } else if (command.equals("빌드")) {
+                buildDataJson();
             }
         }
-
-        saveLastId(wiseSayingId);
 
         System.out.println("프로그램을 종료합니다.");
     }
@@ -55,6 +55,7 @@ public class App {
         wiseSayingId++;
         WiseSaying ws = new WiseSaying(wiseSayingId, author, content);
         if (ws.save(baseDir)) {
+            saveLastId(wiseSayingId);
             wiseSayings.add(ws);
             System.out.println(wiseSayingId + "번 명언이 등록되었습니다.");
         } else {
@@ -102,6 +103,27 @@ public class App {
         }
     }
 
+    private static void buildDataJson() {
+        Path path = baseDir.resolve("data.json");
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("[\n");
+        for (int i = 0; i < wiseSayings.size(); i++) {
+            WiseSaying ws = wiseSayings.get(i);
+            sb.append(ws.toJsonString(1));
+            if (i < wiseSayings.size() - 1) sb.append(",");
+            sb.append("\n");
+        }
+        sb.append("]");
+
+        try {
+            Files.writeString(path, sb.toString());
+            System.out.println("data.json 파일의 내용이 갱신되었습니다.");
+        } catch (IOException e) {
+            System.out.println("data.json 생성 실패: " + e.getMessage());
+        }
+    }
+
     private static int parseId(String command) {
         try {
             return Integer.parseInt(command.split("id=")[1]);
@@ -142,6 +164,8 @@ public class App {
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(baseDir, "*.json")) {
             for (Path path : stream) {
+                if (path.getFileName().toString().equals("data.json")) continue;
+
                 WiseSaying ws = new WiseSaying().fromJson(path);
                 if (ws != null) {
                     wiseSayings.add(ws);

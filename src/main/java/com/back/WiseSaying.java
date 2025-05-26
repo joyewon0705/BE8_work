@@ -44,11 +44,7 @@ public class WiseSaying {
 
     public boolean save(Path baseDir) {
         Path filePath = baseDir.resolve(id + ".json");
-        String json = "{\n" +
-                "   \"id\": " + id + ",\n" +
-                "   \"content\": \"" + content + "\",\n" +
-                "   \"author\": \"" + author + "\"\n" +
-                "}";
+        String json = toJsonString(0);
 
         try {
             Files.writeString(filePath, json);
@@ -69,6 +65,17 @@ public class WiseSaying {
             System.out.println("명언 삭제 실패: " + e.getMessage());
             return false;
         }
+    }
+
+    public String toJsonString(int indentLevel) {
+        String indent = "  ".repeat(indentLevel);
+        String innerIndent = "  ".repeat(indentLevel + 1);
+
+        return indent + "{\n" +
+                innerIndent + "\"id\": " + id + ",\n" +
+                innerIndent + "\"content\": \"" + content + "\",\n" +
+                innerIndent + "\"author\": \"" + author + "\"\n" +
+                indent + "}";
     }
 
     public WiseSaying fromJson(Path path) {
