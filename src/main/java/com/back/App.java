@@ -54,7 +54,7 @@ public class App {
 
         wiseSayingId++;
         WiseSaying ws = new WiseSaying(wiseSayingId, author, content);
-        if (saveWiseSaying(ws)) {
+        if (ws.save(baseDir)) {
             wiseSayings.add(ws);
             System.out.println(wiseSayingId + "번 명언이 등록되었습니다.");
         } else {
@@ -76,7 +76,7 @@ public class App {
         WiseSaying ws = findById(id);
 
         if (ws != null) {
-            if (deleteWiseSaying(ws)) {
+            if (ws.delete(baseDir)) {
                 wiseSayings.remove(ws);
                 System.out.println(id + "번 명언이 삭제되었습니다.");
             }
@@ -96,7 +96,7 @@ public class App {
             System.out.print("작가 : ");
             ws.setAuthor(scanner.nextLine());
 
-            saveWiseSaying(ws);
+            ws.save(baseDir);
         } else {
             System.out.println(id + "번 명언은 존재하지 않습니다.");
         }
@@ -142,7 +142,10 @@ public class App {
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(baseDir, "*.json")) {
             for (Path path : stream) {
-                wiseSayings.add(getWiseSaying(path));
+                WiseSaying ws = new WiseSaying().fromJson(path);
+                if (ws != null) {
+                    wiseSayings.add(ws);
+                }
             }
             wiseSayings.sort(Comparator.comparing(WiseSaying::getId));
             return wiseSayings;
@@ -150,66 +153,5 @@ public class App {
             System.out.println("명언 목록 불러오기 실패: " + e.getMessage());
             return null;
         }
-    }
-
-    private static WiseSaying getWiseSaying(Path path) {
-        try {
-            String json = Files.readString(path);
-            int id = Integer.parseInt(getJsonValue(json, "id"));
-            String content = getJsonValue(json, "content");
-            String author = getJsonValue(json, "author");
-            return new WiseSaying(id, author, content);
-        } catch (IOException e) {
-            System.out.println("명언 불러오기 실패: " + e.getMessage());
-            return null;
-        }
-    }
-
-    private static boolean saveWiseSaying(WiseSaying ws) {
-        Path filePath = baseDir.resolve(ws.getId() + ".json");
-        String json = "{\n" +
-                "   \"id\": " + ws.getId() + ",\n" +
-                "   \"content\": \"" + ws.getContent() + "\",\n" +
-                "   \"author\": \"" + ws.getAuthor() + "\"\n" +
-                "}";
-
-        try {
-            Files.writeString(filePath, json);
-            return true;
-        } catch (IOException e) {
-            System.out.println("명언 저장 실패: " + e.getMessage());
-            return false;
-        }
-    }
-
-    private static boolean deleteWiseSaying(WiseSaying ws) {
-        Path filePath = baseDir.resolve(ws.getId() + ".json");
-
-        try {
-            Files.deleteIfExists(filePath);
-            return true;
-        } catch (IOException e) {
-            System.out.println("명언 삭제 실패: " + e.getMessage());
-            return false;
-        }
-    }
-
-    private static String getJsonValue(String json, String key) {
-        String target = "\"" + key + "\"";
-        int index = json.indexOf(target);
-        if (index == -1) return "";
-
-        int start = json.indexOf(':', index) + 1;
-        while (start < json.length() && (json.charAt(start) == ' ' || json.charAt(start) == '\"')) {
-            start++;
-        }
-
-        int end = start;
-        boolean isString = json.charAt(start - 1) == '\"';
-        while (end < json.length() && (isString ? json.charAt(end) != '\"' : Character.isDigit(json.charAt(end)))) {
-            end++;
-        }
-
-        return json.substring(start, end).trim();
     }
 }
