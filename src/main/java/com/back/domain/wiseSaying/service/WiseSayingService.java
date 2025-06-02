@@ -1,6 +1,6 @@
 package com.back.domain.wiseSaying.service;
 
-import com.back.domain.wiseSaying.domain.wiseSaying.repository.WiseSayingRepository;
+import com.back.domain.wiseSaying.repository.WiseSayingRepository;
 import com.back.domain.wiseSaying.entity.WiseSaying;
 
 import java.util.List;

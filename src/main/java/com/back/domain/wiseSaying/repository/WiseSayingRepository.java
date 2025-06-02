@@ -1,4 +1,4 @@
-package com.back.domain.wiseSaying.domain.wiseSaying.repository;
+package com.back.domain.wiseSaying.repository;
 
 import com.back.util.JsonUtils;
 import com.back.domain.wiseSaying.entity.WiseSaying;
