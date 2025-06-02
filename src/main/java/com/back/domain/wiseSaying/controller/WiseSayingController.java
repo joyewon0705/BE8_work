@@ -8,11 +8,12 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class WiseSayingController {
-    private final Scanner scanner = new Scanner(System.in);
     private final WiseSayingService service;
+    private final Scanner scanner;
 
-    public WiseSayingController(WiseSayingService service) {
+    public WiseSayingController(WiseSayingService service, Scanner scanner) {
         this.service = service;
+        this.scanner = scanner;
     }
 
     public void register() {

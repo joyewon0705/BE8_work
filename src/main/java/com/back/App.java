@@ -7,11 +7,21 @@ import com.back.domain.wiseSaying.service.WiseSayingService;
 import java.util.Scanner;
 
 public class App {
+    private static Scanner scanner = null;
+
+    public static void run(Scanner scanner) {
+        App.scanner = scanner;
+        main(null);
+    }
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         WiseSayingRepository repository = new WiseSayingRepository();
         WiseSayingService service = new WiseSayingService(repository);
-        WiseSayingController controller = new WiseSayingController(service);
+        WiseSayingController controller = new WiseSayingController(service, scanner);
+
+        if (scanner == null) {
+            scanner = new Scanner(System.in);
+        }
 
         System.out.println("== 명언 앱 ==");
 
