@@ -1,6 +1,8 @@
 package com.back;
 
 import com.back.standard.util.TestUtil;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -9,6 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class AppTest {
     private static final Path baseDir = Paths.get("db/wiseSaying");
@@ -45,5 +49,15 @@ public class AppTest {
         String out = byteArrayOutputStream.toString().trim();
         TestUtil.clearSetOutToByteArray(byteArrayOutputStream);
         return out;
+    }
+
+    @Test
+    @DisplayName("앱 실행")
+    void t1() {
+        final String out = AppTest.run("");
+
+        assertThat(out)
+                .contains("== 명언 앱 ==")
+                .contains("명령) ");
     }
 }

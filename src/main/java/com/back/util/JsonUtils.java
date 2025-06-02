@@ -5,6 +5,7 @@ import com.back.domain.wiseSaying.entity.WiseSaying;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 public class JsonUtils {
 
@@ -17,6 +18,18 @@ public class JsonUtils {
                 innerIndent + "\"content\": \"" + ws.getContent() + "\",\n" +
                 innerIndent + "\"author\": \"" + ws.getAuthor() + "\"\n" +
                 indent + "}";
+    }
+
+    public static String toJsonArrayString(List<WiseSaying> list) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[\n");
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(toJsonString(list.get(i), 1));
+            if (i < list.size() - 1) sb.append(",");
+            sb.append("\n");
+        }
+        sb.append("]");
+        return sb.toString();
     }
 
     public static WiseSaying fromJson(Path path) {

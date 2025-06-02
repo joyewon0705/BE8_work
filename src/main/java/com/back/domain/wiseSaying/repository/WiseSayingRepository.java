@@ -81,18 +81,10 @@ public class WiseSayingRepository {
     public void exportAllToJsonFile() {
         Path path = baseDir.resolve("data.json");
         List<WiseSaying> list = findAll();
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("[\n");
-        for (int i = 0; i < list.size(); i++) {
-            sb.append(JsonUtils.toJsonString(list.get(i), 1));
-            if (i < list.size() - 1) sb.append(",");
-            sb.append("\n");
-        }
-        sb.append("]");
+        String json = JsonUtils.toJsonArrayString(list);
 
         try {
-            Files.writeString(path, sb.toString());
+            Files.writeString(path, json);
         } catch (IOException e) {
             System.out.println("ERROR: data.json 생성 실패: " + e.getMessage());
         }
