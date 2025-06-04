@@ -1,6 +1,6 @@
-package com.back.domain.wiseSaying.controller;
+package com.app13.domain.wiseSaying.controller;
 
-import com.back.AppTest;
+import com.app13.AppTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -116,7 +116,7 @@ public class WiseSayingControllerTest {
     @Test
     @DisplayName("빌드")
     void t9() throws IOException {
-        final String out = AppTest.run(
+        final String out = com.back.AppTest.run(
                 commandRegister1 + commandRegister2 + "빌드\n"
         );
 
@@ -139,5 +139,11 @@ public class WiseSayingControllerTest {
                   }
                 ]
                 """.trim());
+    }
+
+    @Test
+    @DisplayName("목록")
+    void t10() {
+
     }
 }
