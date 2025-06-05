@@ -207,4 +207,23 @@ public class WiseSayingControllerTest {
                 .contains("1 / 작자미상 1 / 명언 1")
                 .contains("페이지 : 1 / [2]");
     }
+
+    @Test
+    @DisplayName("목록: 페이징3")
+    void t14() {
+        final String out = AppTest.run("목록?pageSize=10\n");
+
+        assertThat(out)
+                .contains("10 / 작자미상 10 / 명언 10")
+                .contains("9 / 작자미상 9 / 명언 9")
+                .contains("8 / 작자미상 8 / 명언 8")
+                .contains("7 / 작자미상 7 / 명언 7")
+                .contains("6 / 작자미상 6 / 명언 6")
+                .contains("5 / 작자미상 5 / 명언 5")
+                .contains("4 / 작자미상 4 / 명언 4")
+                .contains("3 / 작자미상 3 / 명언 3")
+                .contains("2 / 작자미상 2 / 명언 2")
+                .contains("1 / 작자미상 1 / 명언 1")
+                .contains("페이지 : [1]");
+    }
 }

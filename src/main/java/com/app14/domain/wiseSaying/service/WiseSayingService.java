@@ -2,7 +2,9 @@ package com.app14.domain.wiseSaying.service;
 
 import com.app14.domain.wiseSaying.entity.WiseSaying;
 import com.app14.domain.wiseSaying.repository.WiseSayingRepository;
+import com.app14.standard.util.Page;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,5 +65,19 @@ public class WiseSayingService {
             case "author" -> repository.findByAuthor(keyword);
             default -> List.of();
         };
+    }
+
+    public Page<WiseSaying> searchPage(String keywordType, String keyword, int pageSize, int pageNo) {
+        List<WiseSaying> matched = searchByKeyword(keywordType, keyword);
+        Collections.reverse(matched);
+
+        int totalCount = matched.size();
+        int totalPage = (int) Math.ceil((double) totalCount / pageSize);
+        int startIndex = Math.max(0, (pageNo - 1) * pageSize);
+        int endIndex = Math.min(startIndex + pageSize, totalCount);
+
+        List<WiseSaying> pageItems = matched.subList(startIndex, endIndex);
+
+        return new Page<>(pageSize, totalPage, pageNo, pageItems);
     }
 }

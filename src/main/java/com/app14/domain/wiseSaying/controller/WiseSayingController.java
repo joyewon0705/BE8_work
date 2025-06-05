@@ -3,10 +3,12 @@ package com.app14.domain.wiseSaying.controller;
 import com.app14.domain.wiseSaying.entity.WiseSaying;
 import com.app14.domain.wiseSaying.service.WiseSayingService;
 import com.app14.standard.request.CommandRequest;
+import com.app14.standard.util.Page;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class WiseSayingController {
     private final WiseSayingService service;
@@ -30,7 +32,11 @@ public class WiseSayingController {
     public void list(CommandRequest rq) {
         String keywordType = rq.getOption("keywordType", "all");
         String keyword = rq.getOption("keyword", "");
-        List<WiseSaying> list = service.searchByKeyword(keywordType, keyword);
+        int pageSize = rq.getOptionAsInt("pageSize", 5);
+        int pageNo = rq.getOptionAsInt("page", 1);
+
+        Page<WiseSaying> page = service.searchPage(keywordType, keyword, pageSize, pageNo);
+
         if (!keywordType.equals("all")) {
             System.out.println("----------------------");
             System.out.println("검색타입 : " + keywordType);
@@ -39,10 +45,16 @@ public class WiseSayingController {
         }
         System.out.println("번호 / 작가 / 명언");
         System.out.println("----------------------");
-        for (int i = list.size() - 1; i >= 0; i--) {
-            WiseSaying ws = list.get(i);
+        for (WiseSaying ws : page.getPageItems()) {
             System.out.println(ws.getId() + " / " + ws.getAuthor() + " / " + ws.getContent());
         }
+        System.out.println("----------------------");
+        System.out.printf("페이지 : ");
+        System.out.println(
+                IntStream.rangeClosed(1, page.getTotalPage())
+                        .mapToObj(i -> i == page.getCurrentPage() ? "[" + i + "]" : String.valueOf(i))
+                        .collect(Collectors.joining(" / "))
+        );
     }
 
     public void delete(CommandRequest rq) {
