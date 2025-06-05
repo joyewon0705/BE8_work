@@ -142,8 +142,34 @@ public class WiseSayingControllerTest {
     }
 
     @Test
-    @DisplayName("목록")
+    @DisplayName("목록: 내용으로 검색")
     void t10() {
+        final String out = AppTest.run(
+                commandRegister1 + commandRegister2 + """
+                        목록?keywordType=content&keyword=과거
+                        """
+        );
 
+        assertThat(out)
+                .contains("검색타입 : content")
+                .contains("검색어 : 과거")
+                .contains("2 / 작자미상 / 과거에 집착하지 마라.")
+                .doesNotContain("1 / 작자미상 / 현재를 사랑하라.");
+    }
+
+    @Test
+    @DisplayName("목록: 작가로 검색")
+    void t11() {
+        final String out = AppTest.run(
+                commandRegister1 + commandRegister2 + """
+                        목록?keywordType=author&keyword=작자
+                        """
+        );
+
+        assertThat(out)
+                .contains("검색타입 : author")
+                .contains("검색어 : 작자")
+                .contains("2 / 작자미상 / 과거에 집착하지 마라.")
+                .contains("1 / 작자미상 / 현재를 사랑하라.");
     }
 }

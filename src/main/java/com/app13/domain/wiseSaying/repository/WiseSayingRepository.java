@@ -84,4 +84,16 @@ public class WiseSayingRepository {
             System.out.println("error: " + e.getMessage());
         }
     }
+
+    public List<WiseSaying> findByContent(String keyword) {
+        return findAll().stream()
+                .filter(ws -> ws.getContent().contains(keyword))
+                .toList();
+    }
+
+    public List<WiseSaying> findByAuthor(String keyword) {
+        return findAll().stream()
+                .filter(ws -> ws.getAuthor().contains(keyword))
+                .toList();
+    }
 }

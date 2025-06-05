@@ -21,10 +21,6 @@ public class WiseSayingService {
         return ws;
     }
 
-    public List<WiseSaying> findAll() {
-        return repository.findAll();
-    }
-
     public boolean deleteById(int id) {
         Optional<WiseSaying> optional = repository.findById(id);
         if (optional.isEmpty()) return false;
@@ -49,5 +45,15 @@ public class WiseSayingService {
 
     public void buildJsonFile() {
         repository.saveAll();
+    }
+
+    public List<WiseSaying> searchByKeyword(String keywordType, String keyword) {
+        if (keywordType.equals("all") || keyword.isBlank()) return repository.findAll();
+
+        return switch (keywordType) {
+            case "content" -> repository.findByContent(keyword);
+            case "author" -> repository.findByAuthor(keyword);
+            default -> List.of();
+        };
     }
 }

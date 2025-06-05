@@ -4,6 +4,7 @@ import com.app13.domain.wiseSaying.entity.WiseSaying;
 import com.app13.domain.wiseSaying.service.WiseSayingService;
 import com.app13.standard.request.CommandRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -27,8 +28,16 @@ public class WiseSayingController {
         System.out.println(id + "번 명언이 등록되었습니다.");
     }
 
-    public void list() {
-        List<WiseSaying> list = service.findAll();
+    public void list(CommandRequest rq) {
+        String keywordType = rq.getOption("keywordType", "all");
+        String keyword = rq.getOption("keyword", "");
+        List<WiseSaying> list = service.searchByKeyword(keywordType, keyword);
+        if (!keywordType.equals("all")) {
+            System.out.println("----------------------");
+            System.out.println("검색타입 : " + keywordType);
+            System.out.println("검색어 : " + keyword);
+            System.out.println("----------------------");
+        }
         System.out.println("번호 / 작가 / 명언");
         System.out.println("----------------------");
         for (int i = list.size() - 1; i >= 0; i--) {
