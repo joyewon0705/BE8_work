@@ -1,10 +1,9 @@
-package com.app13.domain.wiseSaying.controller;
+package com.app14.domain.wiseSaying.controller;
 
-import com.app13.domain.wiseSaying.entity.WiseSaying;
-import com.app13.domain.wiseSaying.service.WiseSayingService;
-import com.app13.standard.request.CommandRequest;
+import com.app14.domain.wiseSaying.entity.WiseSaying;
+import com.app14.domain.wiseSaying.service.WiseSayingService;
+import com.app14.standard.request.CommandRequest;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;

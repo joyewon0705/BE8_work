@@ -1,7 +1,7 @@
-package com.app13.domain.wiseSaying.repository;
+package com.app14.domain.wiseSaying.repository;
 
-import com.app13.domain.wiseSaying.entity.WiseSaying;
-import com.app13.standard.util.JsonUtils;
+import com.app14.domain.wiseSaying.entity.WiseSaying;
+import com.app14.standard.util.JsonUtils;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;

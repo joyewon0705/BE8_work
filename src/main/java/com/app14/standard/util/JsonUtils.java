@@ -1,6 +1,6 @@
-package com.app13.standard.util;
+package com.app14.standard.util;
 
-import com.app13.domain.wiseSaying.entity.WiseSaying;
+import com.app14.domain.wiseSaying.entity.WiseSaying;
 
 import java.io.IOException;
 import java.nio.file.Files;

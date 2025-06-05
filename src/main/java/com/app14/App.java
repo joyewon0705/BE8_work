@@ -1,9 +1,9 @@
-package com.app13;
+package com.app14;
 
-import com.app13.domain.wiseSaying.controller.WiseSayingController;
-import com.app13.domain.wiseSaying.repository.WiseSayingRepository;
-import com.app13.domain.wiseSaying.service.WiseSayingService;
-import com.app13.standard.request.CommandRequest;
+import com.app14.domain.wiseSaying.controller.WiseSayingController;
+import com.app14.domain.wiseSaying.repository.WiseSayingRepository;
+import com.app14.domain.wiseSaying.service.WiseSayingService;
+import com.app14.standard.request.CommandRequest;
 
 import java.util.Scanner;
 
@@ -21,6 +21,7 @@ public class App {
         WiseSayingController controller = new WiseSayingController(service, scanner);
 
         if (scanner == null) scanner = new Scanner(System.in);
+        service.initSampleIfEmpty();
 
         System.out.println("== 명언 앱 ==");
         while (true) {

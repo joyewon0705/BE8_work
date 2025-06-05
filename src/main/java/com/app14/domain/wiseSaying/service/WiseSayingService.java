@@ -1,7 +1,7 @@
-package com.app13.domain.wiseSaying.service;
+package com.app14.domain.wiseSaying.service;
 
-import com.app13.domain.wiseSaying.entity.WiseSaying;
-import com.app13.domain.wiseSaying.repository.WiseSayingRepository;
+import com.app14.domain.wiseSaying.entity.WiseSaying;
+import com.app14.domain.wiseSaying.repository.WiseSayingRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +11,14 @@ public class WiseSayingService {
 
     public WiseSayingService(WiseSayingRepository repository) {
         this.repository = repository;
+    }
+
+    public void initSampleIfEmpty() {
+        if (repository.getLastId() == 0) {
+            for (int i = 1; i <= 10; i++) {
+                register("명언 " + i, "작자미상 " + i);
+            }
+        }
     }
 
     public WiseSaying register(String content, String author) {
